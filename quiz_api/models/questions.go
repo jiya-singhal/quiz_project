@@ -7,4 +7,5 @@ type Question struct {
     Options   []string `json:"options"`
     Correct   int      `json:"correct"`
     Level       int      `json:"level"`
+    ImageURL    string   `json:"imageUrl"`
 }

@@ -5,6 +5,7 @@ class Question {
   final List<String> options;
   final int correct;
   final int level;
+  final String imageUrl;  // New field for image URL
 
   Question({
     required this.id,
@@ -13,6 +14,7 @@ class Question {
     required this.options,
     required this.correct,
     required this.level,
+    required this.imageUrl,  
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class Question {
       options: List<String>.from(json['options']),
       correct: json['correct'],
       level: json['level'],
+      imageUrl: json['imageUrl'],  
     );
   }
 }

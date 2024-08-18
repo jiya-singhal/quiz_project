@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz/utils/level_manager.dart';  // Adjust the import path
+import 'package:quiz/utils/level_manager.dart';  
 import 'package:quiz/screens/quiz_screen.dart';
 
 class LevelSelectionScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class LevelSelectionScreen extends StatelessWidget {
         if (!snapshot.hasData) return CircularProgressIndicator();
 
         int unlockedLevel = snapshot.data!;
-        int maxLevel = 3;  // Define the maximum level available
+        int maxLevel = 3;  
 
         return Scaffold(
           appBar: AppBar(

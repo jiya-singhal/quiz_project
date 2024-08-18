@@ -6,7 +6,7 @@ import 'dart:convert';
 import '../models/question_model.dart';
 import '../services/api_service.dart';
 import 'result_screen.dart';
-import '../utils/level_manager.dart';  // Importing the LevelManager
+import '../utils/level_manager.dart';  
 import '../screens/level_selection_screen.dart'; 
 
 class QuizScreen extends StatefulWidget {
@@ -26,19 +26,19 @@ class _QuizScreenState extends State<QuizScreen> {
   int selectedAnswerIndex = -1;
 
   // Timer variables
-  int timeLimit = 10; // Set the time limit for each question in seconds
-  int remainingTime = 10; // Remaining time for the current question
-  Timer? timer; // Timer object
+  int timeLimit = 10; 
+  int remainingTime = 10; 
+  Timer? timer; 
 
   @override
   void initState() {
     super.initState();
-    loadQuestions(widget.currentLevel);  // Load questions based on the selected level
+    loadQuestions(widget.currentLevel);  
   }
 
   void loadQuestions(int level) async {
-    questions = await ApiService.fetchQuestionsByLevel(level);  // Fetch questions based on the selected level
-    startTimer();  // Start the timer when questions are loaded
+    questions = await ApiService.fetchQuestionsByLevel(level);  
+    startTimer();  
     setState(() {});
   }
 
@@ -50,7 +50,7 @@ class _QuizScreenState extends State<QuizScreen> {
           remainingTime--;
         } else {
           t.cancel();
-          goToNextQuestion();  // Move to the next question when time runs out
+          goToNextQuestion();  
         }
       });
     });
@@ -66,10 +66,10 @@ class _QuizScreenState extends State<QuizScreen> {
         currentQuestionIndex++;
         isAnswered = false;
         selectedAnswerIndex = -1;
-        startTimer();  // Restart the timer for the next question
+        startTimer();  
       });
     } else {
-      // Unlock the next level if completed
+
       LevelManager.unlockNextLevel(widget.currentLevel + 1);
 
       Navigator.pushReplacement(
@@ -82,7 +82,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   void checkAnswer(int selectedIndex) {
-    stopTimer();  // Stop the timer when an answer is selected
+    stopTimer();  
 
     setState(() {
       isAnswered = true;
@@ -146,10 +146,17 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   SizedBox(height: 20),
                   Expanded(
-                    child: Center(
-                      child: Image.asset('assets/images/chart.jpeg'), // Placeholder for the image
-                    ),
-                  ),
+  child: Center(
+    child: FadeInImage.assetNetwork(
+      placeholder: 'assets/images/chart.jpeg', 
+      image: questions[currentQuestionIndex].imageUrl,
+      imageErrorBuilder: (context, error, stackTrace) {
+        return Text('Failed to load image');
+      },
+    ),
+  ),
+),
+
                   SizedBox(height: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +251,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void dispose() {
-    timer?.cancel(); // Cancel the timer when the widget is disposed
+    timer?.cancel(); 
     super.dispose();
   }
 }

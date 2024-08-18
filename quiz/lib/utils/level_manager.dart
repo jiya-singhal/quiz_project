@@ -12,6 +12,6 @@ class LevelManager {
 
   static Future<int> getUnlockedLevel() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('unlockedLevel') ?? 1; // Default to 1 if not set
+    return prefs.getInt('unlockedLevel') ?? 1; 
   }
 }

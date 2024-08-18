@@ -8,18 +8,18 @@ import (
 )
 
 func GetQuestions(w http.ResponseWriter, r *http.Request) {
-	// Set CORS headers
+	
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
 
-	// Retrieve the 'level' query parameter
+	
 	levelStr := r.URL.Query().Get("level")
 	level, err := strconv.Atoi(levelStr)
 	if err != nil || level < 1 {
-		level = 1 // Default to level 1 if no valid level is provided
+		level = 1 
 	}
 
-	// Define questions with levels
+
 	questions := []models.Question{
 		{
 			ID:        1,
@@ -27,7 +27,8 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 			Question:  "Will AUD/USD go up or down?",
 			Options:   []string{"Up", "Down"},
 			Correct:   1,
-			Level:     1,  // Assigning level to the question
+			Level:     1,  
+			ImageURL: "https://i.imgur.com/JJBWAnt.jpeg",
 		},
 		{
 			ID:        2,
@@ -35,7 +36,8 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 			Question:  "What will happen to the price of oil?",
 			Options:   []string{"Up", "Down"},
 			Correct:   1,
-			Level:     1,  // Assigning level to the question
+			Level:     1,  
+			ImageURL: "https://i.imgur.com/q4Rv5LL.jpeg",
 		},
 		{
 			ID:        3,
@@ -43,23 +45,26 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 			Question:  "What will likely happen to the stock market?",
 			Options:   []string{"Up", "Down"},
 			Correct:   2,
-			Level:     2,  // Assigning level to the question
+			Level:     2,  
+			ImageURL: "https://i.imgur.com/CgGwyUp.jpeg",
 		},
 		{
 			ID:        4,
-			Situation: "Which planet is known as the Red Planet?",
-			Question:  "What is the name of this planet?",
-			Options:   []string{"Earth", "Mars", "Venus", "Jupiter"},
-			Correct:   2,
-			Level:     1,  // General knowledge question at level 1
+			Situation: "US bond yeilds go down?",
+			Question:  "Will gold go up or down?",
+			Options:   []string{"Up", "Down"},
+			Correct:   1,
+			Level:     1,  
+			ImageURL: "https://i.imgur.com/iCMWEBG.jpeg",
 		},
 		{
 			ID:        5,
-			Situation: "What is the largest mammal in the world?",
-			Question:  "Which animal holds this title?",
-			Options:   []string{"Elephant", "Blue Whale", "Giraffe", "Orca"},
+			Situation: "UK inflation rate increases more than forecasted.",
+			Question:  "What will happen to GBP/USD?",
+			Options:   []string{"Up", "Down"},
 			Correct:   2,
-			Level:     1,  // General knowledge question at level 1
+			Level:     1,  
+			ImageURL: "https://i.imgur.com/1kQwKP5.jpeg",
 		},
 		{
 			ID:        6,
@@ -68,26 +73,29 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 			Options:   []string{"Theory of Relativity", "Quantum Mechanics", "String Theory", "Theory of Evolution"},
 			Correct:   1,
 			Level:     2,  // General knowledge question at level 2
+			ImageURL: "https://i.imgur.com/JJBWAnt.jpeg",
 		},
 		{
 			ID:        7,
-			Situation: "What is the capital city of France?",
-			Question:  "Which city is this?",
-			Options:   []string{"Rome", "Madrid", "Berlin", "Paris"},
-			Correct:   4,
-			Level:     1,  // General knowledge question at level 1
+			Situation: "British pound jumps 2.1% against the euro.",
+			Question:  "Will the UK's property development companies' revenues go up or down?",
+			Options:   []string{"Up", "Down"},
+			Correct:   2,
+			Level:     1,  
+			ImageURL: "https://i.imgur.com/iCMWEBG.jpeg",
 		},
 		{
 			ID:        8,
-			Situation: "In what year did the Titanic sink?",
-			Question:  "Which year did this event occur?",
-			Options:   []string{"1912", "1905", "1918", "1923"},
+			Situation: "China's education ministry urges students going overseas to think carefully before choosing Australia.",
+			Question:  "Will AUD/USD go up or down?",
+			Options:   []string{"Up", "Down"},
 			Correct:   1,
-			Level:     3,  // General knowledge question at level 3
+			Level:     3,  
+			ImageURL: "https://i.imgur.com/iCMWEBG.jpeg",
 		},
 	}
 
-	// Filter questions based on the requested level
+
 	filteredQuestions := []models.Question{}
 	for _, q := range questions {
 		if q.Level == level {
@@ -95,6 +103,6 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Return filtered questions
+
 	json.NewEncoder(w).Encode(filteredQuestions)
 }
