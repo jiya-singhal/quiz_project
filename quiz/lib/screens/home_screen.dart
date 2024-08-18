@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz/screens/quiz_screen.dart';
+import 'package:quiz/screens/level_selection_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -12,12 +13,13 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
+            // Navigate to LevelSelectionScreen instead of QuizScreen directly
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => QuizScreen()),
+              MaterialPageRoute(builder: (context) => LevelSelectionScreen()),
             );
           },
-          child: Text('Start Quiz'),
+          child: Text('Let\'s Play Quiz'),
         ),
       ),
     );
