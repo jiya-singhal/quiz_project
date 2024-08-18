@@ -26,14 +26,14 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {});
   }
 
-  void nextQuestion(bool correct) {
+  void checkAnswer(int selectedIndex) {
     setState(() {
       isAnswered = true;
-      isCorrect = correct;
+      isCorrect = selectedIndex == questions[currentQuestionIndex].correct;
     });
 
     Future.delayed(Duration(seconds: 2), () {
-      if (correct) score++;
+      if (isCorrect) score++;
       if (currentQuestionIndex < questions.length - 1) {
         setState(() {
           currentQuestionIndex++;
@@ -43,7 +43,8 @@ class _QuizScreenState extends State<QuizScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ResultScreen(score: score, total: questions.length),
+            builder: (context) =>
+                ResultScreen(score: score, total: questions.length),
           ),
         );
       }
@@ -54,149 +55,143 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        title: Text('Quiz'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: questions.isEmpty
           ? Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  color: Colors.purple,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Question ${currentQuestionIndex + 1} of ${questions.length} – Fundamentals',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Question ${currentQuestionIndex + 1} of ${questions.length}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                // Display the situation
+                Text(
+                  'Situation: ${questions[currentQuestionIndex].situation}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Situation: The trade war between the U.S. and China is escalating.',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Question: Will AUD/USD go up or down?',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
+                  SizedBox(height: 20),
+                  Text(
+                    'Question: ${questions[currentQuestionIndex].question}',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Image.asset(
-                          'assets/images/chart.jpeg',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () => nextQuestion(true), // Replace with your logic
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.all(15),
-                                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.red[100],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Up',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: Center(
+                      child: Image.asset('assets/images/chart.jpeg'), // Placeholder for the image
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: questions[currentQuestionIndex].options
+                        .asMap()
+                        .entries
+                        .map((entry) {
+                      int idx = entry.key;
+                      String option = entry.value;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: ElevatedButton(
+                          onPressed: isAnswered
+                              ? null
+                              : () {
+                                  checkAnswer(idx);
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isAnswered
+                                ? (idx == questions[currentQuestionIndex].correct
+                                    ? Colors.green
+                                    : Colors.red)
+                                : Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            GestureDetector(
-                              onTap: () => nextQuestion(false), // Replace with your logic
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.all(15),
-                                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  color: Colors.green[100],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'Down',
-                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 20,
                             ),
-                          ],
+                            textStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: Center(child: Text(option)),
                         ),
-                      ),
-                      if (isAnswered)
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      );
+                    }).toList(),
+                  ),
+                  if (isAnswered)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            isCorrect ? '😄 Correct!' : '😣 Wrong!',
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: isCorrect ? Colors.green : Colors.red,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text(
-                                isCorrect ? '🥳 Correct!' : '😬 Wrong!',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: isCorrect ? Colors.green : Colors.red,
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Logic to show explanation
+                                },
+                                child: Text('Explanation'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: Colors.black,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (currentQuestionIndex <
+                                      questions.length - 1) {
+                                    setState(() {
+                                      currentQuestionIndex++;
+                                      isAnswered = false;
+                                    });
+                                  } else {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ResultScreen(
+                                          score: score,
+                                          total: questions.length,
+                                        ),
                                       ),
-                                    ),
-                                    child: Text('Explanation'),
-                                  ),
-                                  SizedBox(width: 10),
-                                  ElevatedButton(
-                                    onPressed: () => nextQuestion(isCorrect),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.teal,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    child: Text('Continue'),
-                                  ),
-                                ],
+                                    );
+                                  }
+                                },
+                                child: Text('Continue'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.teal,
+                                ),
                               ),
                             ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
+                          )
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
     );
   }

@@ -13,16 +13,29 @@ func GetQuestions(w http.ResponseWriter, r *http.Request) {
 
 	questions := []models.Question{
 		{
-			QuestionText: "What is the capital of France?",
-			Options:      []string{"Berlin", "Madrid", "Paris", "Lisbon"},
-			CorrectOption: 2,
+			
+ID: 1,
+Situation: "The trade war between the U.S. and China is escalating.",
+Question: "Will AUD/USD go up or down?",
+Options:  []string{"Up", "Down"},
+Correct:  1,
 		},
 		{
-			QuestionText: "Who wrote 'Romeo and Juliet'?",
-			Options:      []string{"Mark Twain", "Charles Dickens", "William Shakespeare", "Jane Austen"},
-			CorrectOption: 2,
-		},
-		// Add more questions here
+			
+			ID: 1,
+			Situation: "Saudi Arabia reports an oil output that is higher than what they agreed with OPEC",
+			Question: "What will happen to the price of oil?",
+			Options:  []string{"Up", "Down"},
+			Correct:  2,
+					},
+					{
+			
+						ID: 1,
+						Situation: "The trade war between the U.S. and China is escalating.",
+						Question: "Will AUD/USD go up or down?",
+						Options:  []string{"Up", "Down"},
+						Correct:  1,
+								},
 	}
 
 	json.NewEncoder(w).Encode(questions)

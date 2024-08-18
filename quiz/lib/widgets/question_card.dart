@@ -14,7 +14,7 @@ class QuestionCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            question.questionText,
+            question.question,
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
@@ -23,7 +23,7 @@ class QuestionCard extends StatelessWidget {
           int index = question.options.indexOf(option);
           return ElevatedButton(
             onPressed: () {
-              bool correct = index == question.correctOption;
+              bool correct = index == question.correct;
               onAnswer(correct);
             },
             child: Text(option),
