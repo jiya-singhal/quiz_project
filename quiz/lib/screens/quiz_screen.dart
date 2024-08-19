@@ -26,8 +26,8 @@ class _QuizScreenState extends State<QuizScreen> {
   int selectedAnswerIndex = -1;
 
   // Timer variables
-  int timeLimit = 10; 
-  int remainingTime = 10; 
+  int timeLimit = 20; 
+  int remainingTime = 20; 
   Timer? timer; 
 
   @override
