@@ -3,8 +3,14 @@ import 'package:http/http.dart' as http;
 import '../models/question_model.dart';
 
 class ApiService {
+  // Use the Vercel domain for your base URL
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://quiz-project-git-main-jiya-singhals-projects.vercel.app',
+  );
+
   static Future<List<Question>> fetchQuestionsByLevel(int level) async {
-    final response = await http.get(Uri.parse('http://localhost:8080/questions?level=$level'));
+    final response = await http.get(Uri.parse('$baseUrl/questions?level=$level'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
