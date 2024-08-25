@@ -6,7 +6,7 @@ class ApiService {
   // Use the Vercel domain for your base URL
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://quiz-project-git-main-jiya-singhals-projects.vercel.app',
+    defaultValue: 'https://quiz-project-git-main-jiya-singhals-projects.vercel.app/',
   );
 
   static Future<List<Question>> fetchQuestionsByLevel(int level) async {
